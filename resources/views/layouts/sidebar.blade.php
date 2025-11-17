@@ -1,0 +1,84 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="{{ route('dashboard.admin') }}" class="brand-link">
+        <img src="{{ asset('img/Picture1.png') }}" alt="Logo Desa Margalaksana" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Desa Margalaksana</span>
+    </a>
+
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ asset('dist/img/profil1.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+            </div>
+        </div>
+
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header">Admin</li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.admin') }}" class="nav-link @if (request()->is('admin/dashboard*')) active @endif">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.desa.index') }}" class="nav-link @if (request()->is('admin/admin-desa*')) active @endif">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Admin Desa
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('warga.desa.index') }}" class="nav-link @if (request()->is('admin/warga-desa*')) active @endif">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Warga Desa
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">Layanan</li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.pengajuan.index') }}" class="nav-link @if (request()->is('admin/pengajuan*')) active @endif">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>
+                            Pengajuan Surat
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.antrian.index') }}" class="nav-link @if (request()->is('admin/antrian*')) active @endif">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Antrian Pelayanan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.pengaduan.index') }}" class="nav-link @if (request()->is('admin/pengaduan*')) active @endif">
+                        <i class="nav-icon fas fa-flag"></i>
+                        <p>
+                            Aduan Masyarakat
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">Logout</li>
+                <li class="nav-item">
+                    <form action=" {{ route('logout') }} " method="POST">
+                        @csrf
+                        <button type="submit" class="nav-link btn btn-danger" style="color: white">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>
+                                Keluar
+                            </p>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

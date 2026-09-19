@@ -32,18 +32,61 @@
         </div>
 
         <div class="form-group">
-            <label for="jenis_berkas" class="mb-3">Jenis Berkas Pendukung</label>
-            <input type="text" class="form-control form-control-lg rounded-pill text-md" id="jenis_berkas" name="jenis_berkas" value="{{ $pengajuan->jenis_berkas == 1 ? 'Kartu Keluarga' : 'KTP/SIM/Kartu Pelajar' }}" readonly>
-        </div>
+    <label for="jenis_berkas" class="mb-3">Persyaratan Dokumen</label>
+    <textarea class="form-control" rows="4" readonly>{{ $pengajuan->jenis_berkas }}</textarea>
+</div>
 
         <div class="form-group">
-            <label for="file_berkas" class="mb-3">Upload File Pendukung</label>
-            <div class="w-100 px-4 py-3 d-flex" style="background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 15px;">
-                <a href="#" id="pop">
-                    <img id="imageresource" src="{{ asset('storage/' . $pengajuan->file_berkas) }}" alt="Berkas Pendukung" class="img-fluid" style="height: 150px; border-radius: 15px; object-fit: cover;">
-                </a>
+    <label class="mb-3">Berkas yang Diunggah</label>
+
+    <div class="row">
+
+        @foreach(json_decode($pengajuan->file_berkas, true) as $index => $file)
+
+            @php
+                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            @endphp
+
+            <div class="col-md-3 mb-3">
+
+                @if(in_array($ext,['jpg','jpeg','png']))
+
+                    <a href="{{ asset('storage/'.$file) }}" target="_blank">
+
+                        <img
+                            src="{{ asset('storage/'.$file) }}"
+                            class="img-fluid border rounded"
+                            style="height:180px;width:100%;object-fit:cover;">
+
+                    </a>
+
+                @elseif($ext=='pdf')
+
+                    <div class="border rounded p-3 text-center">
+
+                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+
+                        <br><br>
+
+                        <a href="{{ asset('storage/'.$file) }}"
+                           target="_blank"
+                           class="btn btn-danger btn-sm">
+
+                            Lihat PDF
+
+                        </a>
+
+                    </div>
+
+                @endif
+
             </div>
-        </div>
+
+        @endforeach
+
+    </div>
+
+</div>
 
         <div class="form-group">
             <label for="status" class="mb-3">Status Pengajuan</label>

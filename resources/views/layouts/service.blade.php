@@ -17,7 +17,7 @@
 
     <link rel="icon" href="{{ asset('img/Picture1.ico') }}" type="image/x-icon" />
 
-    <title>Desa Sukamaju | @yield('title')</title>
+    <title>Desa Margalaksana | @yield('title')</title>
 
     <style>
         .navbar-green {

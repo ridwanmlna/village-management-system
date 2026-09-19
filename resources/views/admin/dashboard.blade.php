@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard | Desa Sukamaju')
+@section('title', 'Dashboard | Desa Margalaksana')
 
 @section('page-title', 'Dashboard')
 
@@ -50,6 +50,61 @@
             </div>
         </div>
     </div>
+    
+    <div class="row">
+
+    {{-- Surat Hari Ini --}}
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h3>{{ $surat_hari_ini }}</h3>
+
+                <p>Surat Hari Ini</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <a href="{{ route('admin.rekap.surat') }}" class="small-box-footer">
+        Detail <i class="fas fa-arrow-circle-right"></i>
+    </a>
+        </div>
+    </div>
+
+    {{-- Surat Bulan Ini --}}
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ $surat_bulan_ini }}</h3>
+
+                <p>Surat Bulan Ini</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <a href="{{ route('admin.rekap.surat') }}" class="small-box-footer">
+        Detail <i class="fas fa-arrow-circle-right"></i>
+    </a>
+        </div>
+    </div>
+
+    {{-- Surat Tahun Ini --}}
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{ $surat_tahun_ini }}</h3>
+
+                <p>Surat Tahun Ini</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-calendar"></i>
+            </div>
+            <a href="{{ route('admin.rekap.surat') }}" class="small-box-footer">
+        Detail <i class="fas fa-arrow-circle-right"></i>
+    </a>
+        </div>
+    </div>
+
+</div>
 
     <div class="container-fluid">
         <div class="row">

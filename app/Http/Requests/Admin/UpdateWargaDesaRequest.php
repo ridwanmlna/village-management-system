@@ -16,8 +16,6 @@ class UpdateWargaDesaRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -27,8 +25,13 @@ class UpdateWargaDesaRequest extends FormRequest
             'tanggal_lahir' => ['required', 'date'],
             'jenis_kelamin' => ['required', 'string', 'max:1', 'in:L,P'],
             'alamat' => ['required', 'string'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->id],
-            'phone_number' => ['required', 'string', 'max:15', 'unique:users,phone_number,' . $this->id],
+
+            // Tambahan field dari edit.blade.php
+            'tempat_tanggal_lahir' => ['nullable', 'string', 'max:255'],
+            'status_perkawinan' => ['nullable', 'string', 'max:50'],
+            'warga_negara' => ['nullable', 'string', 'max:50'],
+            'agama' => ['nullable', 'string', 'max:50'],
+            'pekerjaan' => ['nullable', 'string', 'max:100'],
         ];
     }
 
@@ -53,15 +56,18 @@ class UpdateWargaDesaRequest extends FormRequest
             'jenis_kelamin.in' => 'Jenis kelamin harus L atau P',
             'alamat.required' => 'Alamat harus diisi',
             'alamat.string' => 'Alamat harus berupa string',
-            'email.required' => 'Email harus diisi',
-            'email.string' => 'Email harus berupa string',
-            'email.email' => 'Email harus berupa email',
-            'email.max' => 'Email maksimal 255 karakter',
-            'email.unique' => 'Email sudah terdaftar',
-            'phone_number.required' => 'Nomor telepon harus diisi',
-            'phone_number.string' => 'Nomor telepon harus berupa string',
-            'phone_number.max' => 'Nomor telepon maksimal 15 karakter',
-            'phone_number.unique' => 'Nomor telepon sudah terdaftar',
+
+            // Pesan khusus untuk field tambahan
+            'tempat_tanggal_lahir.string' => 'Tempat & tanggal lahir harus berupa string',
+            'tempat_tanggal_lahir.max' => 'Tempat & tanggal lahir maksimal 255 karakter',
+            'status_perkawinan.string' => 'Status perkawinan harus berupa string',
+            'status_perkawinan.max' => 'Status perkawinan maksimal 50 karakter',
+            'warga_negara.string' => 'Warga negara harus berupa string',
+            'warga_negara.max' => 'Warga negara maksimal 50 karakter',
+            'agama.string' => 'Agama harus berupa string',
+            'agama.max' => 'Agama maksimal 50 karakter',
+            'pekerjaan.string' => 'Pekerjaan harus berupa string',
+            'pekerjaan.max' => 'Pekerjaan maksimal 100 karakter',
         ];
     }
 }

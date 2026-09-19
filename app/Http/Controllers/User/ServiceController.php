@@ -52,6 +52,7 @@ class ServiceController extends Controller
         // Cek apakah sudah penuh
         $jumlah_antrian = Antrian::where('created_at', 'like', date('Y-m-d') . '%')->count();
         $data['no_antrian'] = $jumlah_antrian + 1;
+        $data['status_antrian'] = Antrian::STATUS_MENUNGGU;
 
         if ($jumlah_antrian >= 20) {
             return redirect()->back()->with('error', 'Antrian semua pelayanan sudah penuh, silahkan coba lagi besok');
@@ -100,12 +101,23 @@ class ServiceController extends Controller
     public function pengajuanStore(StorePengajuanRequest $request)
     {
         $data = $request->validated();
+        
+        $data['jenis_berkas'] = implode(', ', $data['jenis_berkas']);
 
         // Upload file to storage.
-        $file_name = $request->file('file_berkas')->store('pengajuan', 'public');
+        $fileNames = [];
+$originalNames = [];
 
-        $data['file_berkas'] = $file_name;
-        $data['orginal_name_berkas'] = $request->file('file_berkas')->getClientOriginalName();
+foreach ($request->file('file_berkas') as $file) {
+
+    $path = $file->store('pengajuan', 'public');
+
+    $fileNames[] = $path;
+    $originalNames[] = $file->getClientOriginalName();
+}
+
+$data['file_berkas'] = json_encode($fileNames);
+$data['orginal_name_berkas'] = json_encode($originalNames);
 
         $pengajuan = SuratPengantar::create($data);
         Notifikasi::create([
@@ -151,6 +163,7 @@ class ServiceController extends Controller
         );
 
         $data = $request->all();
+        $data['status_pengaduan'] = 1;
 
         $pengaduan = Pengaduan::create($data);
 

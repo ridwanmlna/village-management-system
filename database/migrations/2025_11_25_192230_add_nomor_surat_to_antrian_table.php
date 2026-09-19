@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('surat', function (Blueprint $table) {
+            // Hanya tambahkan jika kolom belum ada
+            if (!Schema::hasColumn('surat', 'prefix_surat')) {
+                $table->string('prefix_surat')->after('user_id'); // Kode jenis surat
+            }
+            if (!Schema::hasColumn('surat', 'nomor_surat')) {
+                $table->string('nomor_surat')->nullable()->after('prefix_surat'); // Nomor lengkap
+            }
+            if (!Schema::hasColumn('surat', 'cetak_at')) {
+                $table->timestamp('cetak_at')->nullable()->after('nomor_surat'); // Waktu cetak
+            }
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('surat', function (Blueprint $table) {
+            if (Schema::hasColumn('surat', 'prefix_surat')) {
+                $table->dropColumn('prefix_surat');
+            }
+            if (Schema::hasColumn('surat', 'nomor_surat')) {
+                $table->dropColumn('nomor_surat');
+            }
+            if (Schema::hasColumn('surat', 'cetak_at')) {
+                $table->dropColumn('cetak_at');
+            }
+        });
+    }
+};

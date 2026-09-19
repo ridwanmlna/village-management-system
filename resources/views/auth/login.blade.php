@@ -3,14 +3,14 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="row min-h-screen align-items-center justify-content-between">
+    <div class="row vh-100 align-items-center justify-content-between">
         <div class="col-7">
             <div class="container">
-                <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+                <div class="d-flex flex-column justify-content-center align-items-center mb-3">
                     <a href="{{ route('wellcome') }}" class="pointer-event">
                         <img src="{{ asset('img/Picture1.png') }}" alt="Logo" class="img-md">
                     </a>
-                    <h1>Login</h1>
+                    <h1>Login <br> Layanan Desa Margalaksana</h1>
                 </div>
 
                 @if (session('error'))
@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label for="nik" class="mb-4">NIK</label>
                         <input type="text" class="form-control rounded-pill py-4 px-3 @if ($errors->has('nik')) is-invalid @endif" id="nik" name="nik" value="{{ old('nik') }}" autofocus
-                            placeholder="Masukkan NIK anda yang telah terdaftar!" data-inputmask='"mask": "9999999999999999"' data-mask>
+                            placeholder="" data-inputmask='"mask": ""' data-mask>
                         @if ($errors->has('nik'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('nik') }}
@@ -37,7 +37,7 @@
                         <label for="password" class="mb-4">Password</label>
                         <div class="input-group" id="show_hide_password">
                             <input type="password" class="form-control rounded-pill py-4 px-3 @if ($errors->has('password')) is-invalid @endif" id="password" name="password"
-                                placeholder="Gunakan tanggal lahir sebagai password 'tanpa menggunakan spasi dan - '">
+                                placeholder="">
                             <div class="position-absolute right-midlle">
                                 <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                             </div>
@@ -49,10 +49,24 @@
                         @endif
                     </div>
 
-                    <div class="d-flex w-100 justify-content-center mt-5">
-                        <a href="{{ route('wellcome') }}" class="btn btn-outline-secondary px-5 py-2 rounded-pill mr-3">Halaman Utama</a>
-                        <button type="submit" class="btn btn-primary btn-green-pastel px-5 py-2 rounded-pill">Login</button>
-                    </div>
+                    <div class="d-flex w-100 justify-content-center mt-3">
+    <a href="{{ route('wellcome') }}" class="btn btn-outline-secondary px-5 py-2 rounded-pill mr-3">
+        Halaman Utama
+    </a>
+
+    <button type="submit" class="btn btn-primary btn-green-pastel px-5 py-2 rounded-pill">
+        Login
+    </button>
+</div>
+
+<div class="text-center mt-3">
+    <small>
+        Lupa Password?
+        <a href="https://wa.me/6282319207271" target="_blank">
+            Hubungi Admin
+        </a>
+    </small>
+</div>
                 </form>
             </div>
         </div>
@@ -60,6 +74,10 @@
             <img src="{{ asset('img/banner-login.webp') }}" alt="logo" class="img-fluid">
         </div>
     </div>
+    
+    <div class="text-center mt-4 mb-3 text-muted">
+    © {{ date('Y') }} Desa Margalaksana. All Rights Reserved.
+</div>
 @endsection
 
 @push('styles')
@@ -82,6 +100,58 @@
             border-color: #3B6C81;
             color: #fff;
         }
+        
+        h1 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    width: 100%;
+}
+
+.img-md {
+    width: 200px;
+    height: auto;
+}
+
+.text-muted {
+    font-size: 14px;
+    color: #6c757d !important;
+}
+
+.row.vh-100 {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.row.vh-100 {
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    transform: scale(0.92);
+    transform-origin: top center;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+        
     </style>
 @endpush
 

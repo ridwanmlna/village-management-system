@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengajuan Surat | Desa Sukamaju')
+@section('title', 'Pengajuan Surat | Desa Margalaksana')
 
 @section('page-title', 'Pengajuan Surat')
 
@@ -69,35 +69,45 @@
     <a href="{{ route('admin.pengajuan.show', $item->id) }}" class="btn btn-info btn-sm">Detail</a>
     <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Status</button>
     <div class="dropdown-menu">
-        @if ($item->status_pengajuan != 4)
             <form action="{{ route('admin.pengajuan.update', $item->id) }}" method="post">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="status_pengajuan" value="2">
-                <button class="dropdown-item" onclick="return confirm('Yakin ingin mengubah status pengajuan?')">Diterima</button>
+                <button class="dropdown-item" onclick="return confirm('Pastikan seluruh data dan persyaratan pengajuan telah lengkap serta sesuai. Apakah Anda yakin ingin mengubah status pengajuan menjadi Diterima?')">Diterima</button>
             </form>
+            
+            <form action="{{ route('admin.pengajuan.update', $item->id) }}" method="post">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="status_pengajuan" value="3">
+        <button class="dropdown-item"
+            onclick="return confirm('Pastikan pengajuan telah diverifikasi dan siap untuk diproses. Apakah Anda yakin ingin mengubah status pengajuan menjadi Diproses?')">
+            Diproses
+        </button>
+    </form>
+            
             <form action="{{ route('admin.pengajuan.update', $item->id) }}" method="post">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="status_pengajuan" value="4">
-                <button class="dropdown-item" onclick="return confirm('Yakin ingin mengubah status pengajuan?')">Selesai</button>
+                <button class="dropdown-item" onclick="return confirm('Pastikan seluruh proses pengajuan telah selesai. Apakah Anda yakin ingin mengubah status menjadi Selesai?')">Selesai</button>
             </form>
-            <form action="{{ route('admin.pengajuan.update', $item->id) }}" method="post">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status_pengajuan" value="3">
-                <button class="dropdown-item" onclick="return confirm('Yakin ingin mengubah status pengajuan?')">Ditolak</button>
-            </form>
-        @else
-            <button class="dropdown-item" disabled>Selesai</button>
-        @endif
-    </div>
+            
+            <button
+    type="button"
+    class="dropdown-item btn-tolak"
+    data-id="{{ $item->id }}">
+    Ditolak
+</button>
+
+
+</div>
 
     {{-- Tombol Hapus --}}
     <form action="{{ route('admin.pengajuan.destroy', $item->id) }}" method="POST" style="display:inline-block; margin-top:5px;">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus pengajuan ini?')">
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data pengajuan ini? Tindakan ini tidak dapat dibatalkan. Pastikan data yang dipilih sudah benar.')">
             Hapus
         </button>
     </form>
@@ -110,8 +120,57 @@
                                         </tr>
                                     @endforelse
                                 </tbody>
-                            </table>
-                            {{ $pengajuan->links() }}
+</table>
+
+<!-- Form Penolakan -->
+<div id="formPenolakan" class="card card-danger mt-3" style="display:none;">
+    <div class="card-header">
+        <h3 class="card-title">Alasan Penolakan Pengajuan</h3>
+    </div>
+
+    <form id="tolakForm" method="POST">
+        @csrf
+        @method('PUT')
+
+        <input type="hidden" name="status_pengajuan" value="5">
+
+        <div class="card-body">
+
+            <div class="form-group">
+                <label>Alasan Penolakan</label>
+
+                <textarea
+                    name="alasan_penolakan"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Contoh: Berkas KK belum dilampirkan."
+                    required></textarea>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer text-right">
+
+            <button
+                type="button"
+                id="batalTolak"
+                class="btn btn-secondary">
+                Batal
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-danger">
+                Simpan
+            </button>
+
+        </div>
+
+    </form>
+</div>
+
+{{ $pengajuan->links() }}
                         </div>
                     </div>
                 </div>
@@ -119,4 +178,42 @@
         </div>
 
     </div>
+    
+    @push('scripts')
+<script>
+$(document).ready(function () {
+
+    $('.btn-tolak').click(function () {
+
+        // Ambil ID pengajuan
+        let id = $(this).data('id');
+
+        // Tampilkan form
+        $('#formPenolakan').slideDown();
+
+        // Scroll ke form
+        $('html, body').animate({
+            scrollTop: $('#formPenolakan').offset().top - 80
+        }, 500);
+
+        // Ganti action form sesuai ID
+        $('#tolakForm').attr(
+            'action',
+            "{{ url('admin/pengajuan') }}/" + id
+        );
+
+    });
+
+    // Tombol batal
+    $('#batalTolak').click(function () {
+
+        $('#formPenolakan').slideUp();
+
+        $('#tolakForm')[0].reset();
+
+    });
+
+});
+</script>
+@endpush
 @endsection

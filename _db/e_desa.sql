@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Okt 2023 pada 09.58
--- Versi server: 10.4.27-MariaDB
--- Versi PHP: 8.2.0
+-- Generation Time: Sep 19, 2026 at 08:04 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `antrian`
+-- Table structure for table `antrian`
 --
 
 CREATE TABLE `antrian` (
@@ -33,21 +33,15 @@ CREATE TABLE `antrian` (
   `jenis_pelayanan_id` bigint(20) UNSIGNED NOT NULL,
   `no_antrian` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `nomor_surat` int(11) DEFAULT NULL,
+  `tahun_surat` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `antrian`
---
-
-INSERT INTO `antrian` (`id`, `user_id`, `jenis_pelayanan_id`, `no_antrian`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 1, '2023-10-22 08:04:02', '2023-10-22 08:04:02'),
-(2, 3, 1, 2, '2023-10-22 08:05:23', '2023-10-22 08:05:23');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jenis_pelayanan`
+-- Table structure for table `jenis_pelayanan`
 --
 
 CREATE TABLE `jenis_pelayanan` (
@@ -59,21 +53,24 @@ CREATE TABLE `jenis_pelayanan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `jenis_pelayanan`
+-- Dumping data for table `jenis_pelayanan`
 --
 
 INSERT INTO `jenis_pelayanan` (`id`, `nama_pelayanan`, `tipe_layanan`, `created_at`, `updated_at`) VALUES
-(1, 'Pembuatan KTP', 1, NULL, NULL),
-(2, 'Pembuatan Kartu Keluarga', 1, NULL, NULL),
-(3, 'Surat Keterangan', 2, NULL, NULL),
-(4, 'Surat Keterangan Belum Menikah, Duda/Janda', 2, NULL, NULL),
+(1, 'Surat Keterangan Domisili', 2, NULL, NULL),
+(2, 'Surat Pengantar SKCK', 2, NULL, NULL),
+(3, 'Surat Keterangan Tidak Mampu (SKTM) Sekolah', 2, NULL, NULL),
+(4, 'Surat Keterangan Tidak Mampu (SKTM) Umum', 2, NULL, NULL),
 (5, 'Surat Keterangan Usaha', 2, NULL, NULL),
-(6, 'Lain - Lain', NULL, NULL, NULL);
+(7, 'Surat Keterangan Belum Menikah', 2, NULL, NULL),
+(8, 'Surat Keterangan Kelahiran', 2, NULL, NULL),
+(9, 'Surat Keterangan Kematian', 2, NULL, NULL),
+(10, 'Lain-lain', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -83,7 +80,7 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -102,12 +99,20 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2023_06_12_144255_add_jenis_pelayanan_seeder', 1),
 (14, '2023_06_12_145210_add_deleted_at_to_users', 1),
 (15, '2023_06_12_145334_add_users_seeder', 1),
-(16, '2023_06_12_160848_delete_unsed_table', 1);
+(16, '2023_06_12_160848_delete_unsed_table', 1),
+(17, '2025_11_24_230822_add_fields_to_warga_desa_table', 2),
+(18, '2025_11_24_231939_add_agama_pekerjaan_to_users_table', 3),
+(19, '2025_11_24_232359_remove_email_phone_from_users_table', 4),
+(20, '2025_11_25_192230_add_nomor_surat_to_antrian_table', 5),
+(21, '2025_11_25_205303_add_tahun_surat_to_antrian_table', 6),
+(22, '2025_12_01_182959_add_status_perkawinan_warga_negara_to_users_table', 7),
+(23, '2025_12_01_212819_create_surat_table', 8),
+(24, '2025_12_02_131939_add_nomor_surat_angka_to_surat_table', 9);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `notifikasi`
+-- Table structure for table `notifikasi`
 --
 
 CREATE TABLE `notifikasi` (
@@ -122,23 +127,10 @@ CREATE TABLE `notifikasi` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `notifikasi`
---
-
-INSERT INTO `notifikasi` (`id`, `user_id`, `status_notifikasi`, `judul_notifikasi`, `isi_notifikasi`, `link_notifikasi`, `tipe_notifikasi`, `created_at`, `updated_at`) VALUES
-(1, 3, 2, 'Antrian berhasil dibuat', 'Antrian anda berhasil dibuat, silahkan menunggu panggilan selanjutnya', '1', 1, '2023-10-22 08:04:02', '2023-10-22 08:08:27'),
-(2, 3, 2, 'Pengajuan berhasil dibuat', 'Pengajuan anda berhasil dibuat, silahkan menunggu proses selanjutnya', '1', 2, '2023-10-22 08:05:07', '2023-10-22 08:08:27'),
-(3, 3, 2, 'Antrian berhasil dibuat', 'Antrian anda berhasil dibuat, silahkan menunggu panggilan selanjutnya', '2', 1, '2023-10-22 08:05:23', '2023-10-22 08:09:17'),
-(4, 3, 2, 'Pengaduan berhasil dibuat', 'Pengaduan anda berhasil dibuat, silahkan menunggu proses selanjutnya', '1', 3, '2023-10-22 08:05:41', '2023-10-22 08:08:27'),
-(5, 3, 2, 'Status pengajuan Verifikasi Berhasil', 'Status pengajuan Verifikasi Berhasil, silahkan cek detail pengajuan anda', '1', 2, '2023-10-22 08:07:27', '2023-10-22 08:08:27'),
-(6, 3, 2, 'Status pengajuan Verifikasi Berhasil', 'Status pengajuan Verifikasi Berhasil, silahkan cek detail pengajuan anda', '1', 2, '2023-10-22 08:07:52', '2023-10-22 08:08:27'),
-(7, 3, 2, 'Status pengajuan Selesai', 'Status pengajuan Selesai, silahkan cek detail pengajuan anda', '1', 2, '2023-10-22 08:08:18', '2023-10-22 08:08:27');
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pengaduan`
+-- Table structure for table `pengaduan`
 --
 
 CREATE TABLE `pengaduan` (
@@ -151,7 +143,24 @@ CREATE TABLE `pengaduan` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `surat_pengantar`
+-- Table structure for table `surat`
+--
+
+CREATE TABLE `surat` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `prefix_surat` varchar(255) NOT NULL,
+  `nomor_surat_angka` int(11) DEFAULT NULL,
+  `nomor_surat` varchar(255) DEFAULT NULL,
+  `cetak_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `surat_pengantar`
 --
 
 CREATE TABLE `surat_pengantar` (
@@ -166,28 +175,24 @@ CREATE TABLE `surat_pengantar` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `surat_pengantar`
---
-
-INSERT INTO `surat_pengantar` (`id`, `user_id`, `jenis_pelayanan_id`, `jenis_berkas`, `file_berkas`, `orginal_name_berkas`, `status_pengajuan`, `created_at`, `updated_at`) VALUES
-(1, 3, 3, '2', 'pengajuan/TpwCzgMN6pOoOLMFDu5IH1e3J5WpGfQ58ppqLdpT.jpg', 'contoh.jpg', 4, '2023-10-22 08:05:07', '2023-10-22 08:08:18');
-
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nik` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `tempat_tanggal_lahir` varchar(255) DEFAULT NULL,
+  `agama` varchar(255) DEFAULT NULL,
+  `pekerjaan` varchar(255) DEFAULT NULL,
   `tanggal_lahir` date NOT NULL,
   `jenis_kelamin` enum('L','P') NOT NULL,
+  `status_perkawinan` varchar(255) DEFAULT NULL,
+  `warga_negara` varchar(255) DEFAULT NULL,
   `alamat` text NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone_number` varchar(15) NOT NULL,
   `password` varchar(255) NOT NULL,
   `user_type` enum('1','2') NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -196,20 +201,19 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `nik`, `name`, `tanggal_lahir`, `jenis_kelamin`, `alamat`, `email`, `phone_number`, `password`, `user_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1111111111111111', 'Admin', '2000-01-01', 'L', 'Jl. Admin', 'admin@mail.com', '081234567890', '$2y$10$Gd3wpqU484QPBRqQPrkdR.Y5IOMlNq1hqk1n2/CrlP0ApRL57ic7e', '1', '2023-10-22 07:54:46', '2023-10-22 07:54:46', NULL),
-(2, '0987654321123456', 'Warga 1', '2000-01-01', 'L', 'Jl. Warga 1', 'warga1@mail.com', '081234567891', '$2y$10$AzoNDSJ2VKupjg7c.YENtexF6gDm6d05qm5BCYEDbhociKZwS7pge', '2', '2023-10-22 07:54:46', '2023-10-22 07:54:46', NULL),
-(3, '2327272663563501', 'LUTFI IRAWAN', '1988-10-22', 'L', 'JL. RAYA NO 1 KALITIMBANG CIEBEBR CILEGON BANTEN', 'lutfi@gmail.com', '087777777555', '$2y$10$vFaKKNeDpfp66JSInw4cQe3.1OfzSI7xRoR0WYMWEdPOmbu86qo.a', '2', '2023-10-22 08:02:59', '2023-10-22 08:02:59', NULL);
+INSERT INTO `users` (`id`, `nik`, `name`, `tempat_tanggal_lahir`, `agama`, `pekerjaan`, `tanggal_lahir`, `jenis_kelamin`, `status_perkawinan`, `warga_negara`, `alamat`, `password`, `user_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '1111111111111111', 'Admin Desa', NULL, NULL, NULL, '2000-01-01', 'L', NULL, NULL, 'Jl. Admin', '$2y$10$Gd3wpqU484QPBRqQPrkdR.Y5IOMlNq1hqk1n2/CrlP0ApRL57ic7e', '1', '2023-10-22 07:54:46', '2023-10-22 07:54:46', NULL),
+(237, '2222222222222222', 'Saya', 'Tasik 24 Mei 2004', 'Islam', 'Mahasiswa', '2004-05-24', 'L', 'Belum Kawin', 'Indonesia', 'Tasik', '$2y$10$OiEJzPbO7Yms9mfQyE3N6uq5sDxG15xzP9J.1dVTboUBIFwsnKaLa', '2', '2025-12-03 21:44:47', '2025-12-04 09:09:11', '2025-12-04 09:09:11');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `antrian`
+-- Indexes for table `antrian`
 --
 ALTER TABLE `antrian`
   ADD PRIMARY KEY (`id`),
@@ -217,32 +221,38 @@ ALTER TABLE `antrian`
   ADD KEY `antrian_jenis_pelayanan_id_foreign` (`jenis_pelayanan_id`);
 
 --
--- Indeks untuk tabel `jenis_pelayanan`
+-- Indexes for table `jenis_pelayanan`
 --
 ALTER TABLE `jenis_pelayanan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `notifikasi`
+-- Indexes for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
   ADD PRIMARY KEY (`id`),
   ADD KEY `notifikasi_user_id_foreign` (`user_id`);
 
 --
--- Indeks untuk tabel `pengaduan`
+-- Indexes for table `pengaduan`
 --
 ALTER TABLE `pengaduan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `surat_pengantar`
+-- Indexes for table `surat`
+--
+ALTER TABLE `surat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `surat_pengantar`
 --
 ALTER TABLE `surat_pengantar`
   ADD PRIMARY KEY (`id`),
@@ -250,79 +260,83 @@ ALTER TABLE `surat_pengantar`
   ADD KEY `surat_pengantar_jenis_pelayanan_id_foreign` (`jenis_pelayanan_id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_nik_unique` (`nik`),
-  ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `users_phone_number_unique` (`phone_number`);
+  ADD UNIQUE KEY `users_nik_unique` (`nik`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `antrian`
+-- AUTO_INCREMENT for table `antrian`
 --
 ALTER TABLE `antrian`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `jenis_pelayanan`
+--
+ALTER TABLE `jenis_pelayanan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `notifikasi`
+--
+ALTER TABLE `notifikasi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `pengaduan`
+--
+ALTER TABLE `pengaduan`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `jenis_pelayanan`
+-- AUTO_INCREMENT for table `surat`
 --
-ALTER TABLE `jenis_pelayanan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `surat`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT untuk tabel `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT untuk tabel `notifikasi`
---
-ALTER TABLE `notifikasi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT untuk tabel `pengaduan`
---
-ALTER TABLE `pengaduan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT untuk tabel `surat_pengantar`
+-- AUTO_INCREMENT for table `surat_pengantar`
 --
 ALTER TABLE `surat_pengantar`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5953;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `antrian`
+-- Constraints for table `antrian`
 --
 ALTER TABLE `antrian`
   ADD CONSTRAINT `antrian_jenis_pelayanan_id_foreign` FOREIGN KEY (`jenis_pelayanan_id`) REFERENCES `jenis_pelayanan` (`id`),
   ADD CONSTRAINT `antrian_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `notifikasi`
+-- Constraints for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
   ADD CONSTRAINT `notifikasi_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Ketidakleluasaan untuk tabel `surat_pengantar`
+-- Constraints for table `surat_pengantar`
 --
 ALTER TABLE `surat_pengantar`
   ADD CONSTRAINT `surat_pengantar_jenis_pelayanan_id_foreign` FOREIGN KEY (`jenis_pelayanan_id`) REFERENCES `jenis_pelayanan` (`id`),

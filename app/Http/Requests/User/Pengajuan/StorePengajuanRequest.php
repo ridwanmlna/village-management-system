@@ -22,11 +22,15 @@ class StorePengajuanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'jenis_pelayanan_id' => 'required|exists:jenis_pelayanan,id',
-            'jenis_berkas' => 'required|string',
-            'file_berkas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        ];
+    'user_id' => 'required|exists:users,id',
+    'jenis_pelayanan_id' => 'required|exists:jenis_pelayanan,id',
+
+    'jenis_berkas' => 'required|array',
+    'jenis_berkas.*' => 'required|string',
+
+    'file_berkas' => 'required|array',
+    'file_berkas.*' => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
+];
     }
 
     /**
@@ -35,16 +39,23 @@ class StorePengajuanRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => 'User ID tidak boleh kosong',
-            'user_id.exists' => 'User ID tidak ditemukan',
-            'jenis_pelayanan_id.required' => 'Jenis Pelayanan tidak boleh kosong',
-            'jenis_pelayanan_id.exists' => 'Jenis Pelayanan tidak ditemukan',
-            'jenis_berkas.required' => 'Jenis Berkas tidak boleh kosong',
-            'jenis_berkas.string' => 'Jenis Berkas harus berupa string',
-            'file_berkas.required' => 'File Berkas tidak boleh kosong',
-            'file_berkas.file' => 'File Berkas harus berupa file',
-            'file_berkas.mimes' => 'File Berkas harus berupa gambar atau pdf',
-            'file_berkas.max' => 'File Berkas maksimal 2MB',
-        ];
+    'user_id.required' => 'User ID tidak boleh kosong',
+    'user_id.exists' => 'User ID tidak ditemukan',
+
+    'jenis_pelayanan_id.required' => 'Jenis Pelayanan tidak boleh kosong',
+    'jenis_pelayanan_id.exists' => 'Jenis Pelayanan tidak ditemukan',
+
+    'jenis_berkas.required' => 'Jenis Berkas tidak boleh kosong',
+    'jenis_berkas.array' => 'Pilih minimal satu jenis berkas',
+    'jenis_berkas.*.required' => 'Jenis berkas tidak boleh kosong',
+    'jenis_berkas.*.string' => 'Jenis berkas tidak valid',
+
+    'file_berkas.required' => 'File Berkas tidak boleh kosong',
+    'file_berkas.array' => 'Silakan pilih minimal satu file',
+
+    'file_berkas.*.file' => 'Setiap berkas harus berupa file',
+    'file_berkas.*.mimes' => 'Setiap berkas harus berupa JPG, JPEG, PNG atau PDF',
+    'file_berkas.*.max' => 'Ukuran setiap file maksimal 10 MB',
+];
     }
 }

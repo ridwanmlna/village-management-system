@@ -22,7 +22,8 @@ class UpdateStatusPengajuanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status_pengajuan' => ['required', 'in:1,2,3,4'],
+            'status_pengajuan' => ['required', 'in:1,2,3,4,5'],
+             'alasan_penolakan' => ['nullable', 'string'],
         ];
     }
 

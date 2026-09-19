@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Pengajuan Surat | Desa Sukamaju')
+@section('title', 'Detail Pengajuan Surat | Desa Margalaksana')
 
 @section('page-title', 'Pengajuan Surat')
 
@@ -36,11 +36,46 @@
                                 <label for="name" class="mb-3">Nama</label>
                                 <input type="text" class="form-control rounded-lg" id="name" name="name" value="{{ $pengajuan->user->name }}" readonly>
                             </div>
+                            
+                            <div class="form-group">
+    <label for="jenis_kelamin" class="mb-3">Jenis Kelamin</label>
+    <input type="text" class="form-control rounded-lg"
+           value="{{ $pengajuan->user->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}"
+           readonly>
+</div>
+
+<div class="form-group">
+    <label for="ttl" class="mb-3">Tempat, Tanggal Lahir</label>
+    <input type="text" class="form-control rounded-lg"
+           value="{{ $pengajuan->user->tempat_tanggal_lahir ?? '-' }}"
+           readonly>
+</div>
+
+<div class="form-group">
+    <label for="agama" class="mb-3">Agama</label>
+    <input type="text" class="form-control rounded-lg"
+           value="{{ $pengajuan->user->agama }}"
+           readonly>
+</div>
+
+<div class="form-group">
+    <label for="pekerjaan" class="mb-3">Pekerjaan</label>
+    <input type="text" class="form-control rounded-lg"
+           value="{{ $pengajuan->user->pekerjaan }}"
+           readonly>
+</div>
+
+<div class="form-group">
+    <label for="alamat" class="mb-3">Alamat</label>
+    <textarea class="form-control rounded-lg" rows="3" readonly>{{ $pengajuan->user->alamat }}</textarea>
+</div>
 
                             <div class="form-group">
-                                <label for="tanggal" class="mb-3">Tanggal Pengajuan</label>
-                                <input type="date" class="form-control form-control-lg rounded-pill text-md" id="tanggal" name="tanggal" value="{{ $pengajuan->created_at->format('Y-m-d') }}" readonly>
-                            </div>
+    <label>Tanggal Pengajuan</label>
+    <input type="text" class="form-control"
+           value="{{ $pengajuan->created_at->format('d-m-Y H:i') }}"
+           readonly>
+</div>
 
                             <div class="form-group">
                                 <label for="layanan" class="mb-3">Jenis Layanan</label>
@@ -48,24 +83,64 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="jenis_berkas" class="mb-3">Jenis Berkas Pendukung</label>
-                                <input type="text" class="form-control form-control-lg rounded-pill text-md" id="jenis_berkas" name="jenis_berkas" value="{{ $pengajuan->jenis_berkas == 1 ? 'Kartu Keluarga' : 'KTP/SIM/Kartu Pelajar' }}" readonly>
+                                <label for="jenis_berkas" class="mb-3">Persyaratan Dokumen</label>
+                                <input type="text"
+    class="form-control form-control-lg rounded-pill text-md"
+    value="{{ $pengajuan->jenis_berkas }}"
+    readonly>
                             </div>
 
                             <div class="form-group">
-                                <label for="file_berkas" class="mb-3">Upload File Pendukung</label>
-                                <div class="w-100 px-4 py-3 d-flex" style="background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 15px;">
-                                    <a href="#" id="pop">
-                                        <img id="imageresource" src="{{ asset('storage/' . $pengajuan->file_berkas) }}" alt="Berkas Pendukung" class="img-fluid" style="height: 150px; border-radius: 15px; object-fit: cover;">
-                                    </a>
-                                </div>
+                                <label for="file_berkas" class="mb-3">Berkas yang Diunggah</label>
+                                @php
+    $files = json_decode($pengajuan->file_berkas, true);
+@endphp
+
+<div class="w-100 px-4 py-3"
+    style="background:#e9ecef;border:1px solid #ced4da;border-radius:15px;">
+
+    @foreach($files as $file)
+
+        @php
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+        @endphp
+
+        @if(in_array(strtolower($ext), ['jpg','jpeg','png']))
+            <div class="mb-3">
+                <img src="{{ asset('storage/'.$file) }}"
+                    class="img-fluid rounded"
+                    style="max-height:200px;">
+            </div>
+        @else
+            <div class="mb-2">
+                <a href="{{ asset('storage/'.$file) }}"
+                    target="_blank"
+                    class="btn btn-danger btn-sm">
+                    <i class="fas fa-file-pdf"></i>
+                    Lihat PDF
+                </a>
+            </div>
+        @endif
+
+    @endforeach
+
+</div>
                             </div>
 
                             <div class="form-group">
-                                <label for="status" class="mb-3">Status Pengajuan</label>
-                                <input type="text" class="form-control form-control-lg rounded-pill text-md" id="status" name="status"
-                                    value="@if ($pengajuan->status_pengajuan == 1) Menunggu Verifikasi @elseif($pengajuan->status_pengajuan == 2) Verifikasi Berhasil @elseif($pengajuan->status_pengajuan == 3) Verifikasi Gagal @else Selesai @endif" readonly>
-                            </div>
+                        <label>Status Pengajuan</label>
+                        <div>
+                            {!! $pengajuan->status !!}
+                        </div>
+                    </div>
+                    
+                    @if($pengajuan->status_pengajuan == \App\Models\SuratPengantar::STATUS_DITOLAK && !empty($pengajuan->alasan_penolakan))
+<div class="form-group mt-3">
+    <label>Alasan Penolakan</label>
+
+    <textarea class="form-control" rows="4" readonly>{{ $pengajuan->alasan_penolakan }}</textarea>
+</div>
+@endif
 
                             <div class="d-flex w-100 justify-content-end mt-4">
                                 <a href="{{ route('admin.pengajuan.index') }}" class="btn btn-secondary rounded-pill mr-2">Kembali</a>

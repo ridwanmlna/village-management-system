@@ -2,19 +2,19 @@
 
 @section('title', 'Buat Aduan')
 
-@section('judul', 'Pengaduan')
+@section('judul', 'Pengaduan Masyarakat')
 
 @section('content')
 
     <div class="p-5">
 
-        <h4 class="text-center mb-4">"Menyuarakan Ketidakpuasan secara Anonim: Mengungkap Pengaduan yang Tersembunyi"</h4>
+        <h4 class="text-center mb-4">"Menyampaikan Aspirasi dan Pengaduan Secara Anonim dan Rahasia untuk Mewujudkan Pelayanan Desa Margalaksana yang Lebih Baik"</h4>
 
         <form method="POST" action="{{ route('pengaduan.store') }}">
             @csrf
 
             <div class="form-group">
-                <label for="nama" class="mb-3">Isi Aduan</label>
+                <label for="nama" class="mb-3">Sampaikan Pengaduan Anda:</label>
                 <textarea name="isi_pengaduan" id="isi_pengaduan" class="form-control form-control-lg text-md @error('isi_pengaduan') is-invalid @enderror" rows="5" placeholder="Masukkan isi pengaduan anda">{{ old('isi_pengaduan') }}</textarea>
             </div>
 

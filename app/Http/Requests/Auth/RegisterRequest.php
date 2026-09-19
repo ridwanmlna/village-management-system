@@ -6,35 +6,25 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
             'nik' => ['required', 'string', 'max:16', 'unique:users'],
             'name' => ['required', 'string', 'max:255'],
+            'tempat_tanggal_lahir' => ['required', 'string'],
             'tanggal_lahir' => ['required', 'date'],
+            'agama' => ['required', 'string', 'max:50'],
+            'pekerjaan' => ['required', 'string', 'max:100'],
             'jenis_kelamin' => ['required', 'string', 'max:1', 'in:L,P'],
             'alamat' => ['required', 'string'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone_number' => ['required', 'string', 'max:15', 'unique:users'],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     */
     public function messages(): array
     {
         return [
@@ -45,23 +35,15 @@ class RegisterRequest extends FormRequest
             'name.required' => 'Nama harus diisi',
             'name.string' => 'Nama harus berupa string',
             'name.max' => 'Nama maksimal 255 karakter',
+            'tempat_tanggal_lahir.required' => 'Tempat & tanggal lahir harus diisi',
+            'tempat_tanggal_lahir.string' => 'Tempat & tanggal lahir harus berupa string',
             'tanggal_lahir.required' => 'Tanggal lahir harus diisi',
             'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal',
-            'jenis_kelamin.required' => 'Jenis kelamin harus diisi',
-            'jenis_kelamin.string' => 'Jenis kelamin harus berupa string',
-            'jenis_kelamin.max' => 'Jenis kelamin maksimal 1 karakter',
+            'agama.required' => 'Agama harus dipilih',
+            'pekerjaan.required' => 'Pekerjaan harus diisi',
+            'jenis_kelamin.required' => 'Jenis kelamin harus dipilih',
             'jenis_kelamin.in' => 'Jenis kelamin harus L atau P',
             'alamat.required' => 'Alamat harus diisi',
-            'alamat.string' => 'Alamat harus berupa string',
-            'email.required' => 'Email harus diisi',
-            'email.string' => 'Email harus berupa string',
-            'email.email' => 'Email harus berupa email',
-            'email.max' => 'Email maksimal 255 karakter',
-            'email.unique' => 'Email sudah terdaftar',
-            'phone_number.required' => 'Nomor telepon harus diisi',
-            'phone_number.string' => 'Nomor telepon harus berupa string',
-            'phone_number.max' => 'Nomor telepon maksimal 15 karakter',
-            'phone_number.unique' => 'Nomor telepon sudah terdaftar',
         ];
     }
 }

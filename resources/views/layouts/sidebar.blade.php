@@ -7,7 +7,7 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('dist/img/profil1.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ asset('dist/img/profil1.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ auth()->user()->name }}</a>
@@ -50,6 +50,24 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+    <a href="{{ route('admin.pembuatan-surat.index') }}" class="nav-link @if (request()->is('admin/pembuatan-surat*')) active @endif">
+        <i class="nav-icon fas fa-file-alt"></i>
+        <p>
+            Pembuatan Surat
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('admin.rekap.surat') }}" class="nav-link @if (request()->is('admin/rekap-surat*')) active @endif">
+        <i class="nav-icon fas fa-book"></i>
+        <p>
+            Rekap Surat
+        </p>
+    </a>
+</li>
+
+
                 <li class="nav-item">
                     <a href="{{ route('admin.antrian.index') }}" class="nav-link @if (request()->is('admin/antrian*')) active @endif">
                         <i class="nav-icon fas fa-users"></i>

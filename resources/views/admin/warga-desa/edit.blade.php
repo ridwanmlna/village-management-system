@@ -1,120 +1,143 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Warga Desa | Desa Sukamaju')
-
+@section('title', 'Edit Warga Desa | Desa Margalaksana')
 @section('page-title', 'Warga Desa')
-
 @section('location', 'Admin')
-
 @section('location-title', 'Warga Desa')
 
 @section('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Berhasil!</strong> {{ session('status') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Edit Warga Desa</h3>
+            <div class="card card-primary w-100">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Warga Desa</h3>
+                </div>
 
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                            </button>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('warga.desa.update', $warga_desa->id) }}">
+                        @csrf
+                        @method('PUT')
+
+                        <input type="hidden" name="user_type" value="{{ old('user_type', $warga_desa->user_type) }}">
+
+                        <!-- Nama Lengkap -->
+                        <div class="form-group">
+                            <label for="name" class="mb-3">Nama Lengkap</label>
+                            <input type="text" class="form-control rounded-lg @error('name') is-invalid @enderror"
+                                id="name" name="name" value="{{ old('name', $warga_desa->name) }}">
+                            @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
-                    </div>
-                    <div class="card-body">
 
-                        <form method="POST" action="{{ route('warga.desa.update', $warga_desa->id) }}">
-                            @csrf
-                            @method('PUT')
+                        <!-- NIK -->
+                        <div class="form-group">
+                            <label for="nik" class="mb-3">NIK</label>
+                            <input type="text" class="form-control rounded-lg @error('nik') is-invalid @enderror"
+                                id="nik" name="nik" value="{{ old('nik', $warga_desa->nik) }}"
+                                data-inputmask='"mask": "9999999999999999"' data-mask>
+                            @error('nik') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <input type="hidden" name="user_type" value="2">
+                        <!-- Jenis Kelamin -->
+                        <div class="form-group">
+                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                            <select class="form-control select2 rounded-lg @error('jenis_kelamin') is-invalid @enderror"
+                                id="jenis_kelamin" name="jenis_kelamin">
+                                <option value="" disabled {{ empty(old('jenis_kelamin', $warga_desa->jenis_kelamin)) ? 'selected' : '' }}>-- Pilih Jenis Kelamin --</option>
+                                <option value="L" {{ old('jenis_kelamin', $warga_desa->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('jenis_kelamin', $warga_desa->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                            @error('jenis_kelamin') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="nik" class="mb-3">NIK</label>
-                                <input type="text" class="form-control rounded-lg @if ($errors->has('nik')) is-invalid @endif" id="nik" name="nik" value="{{ $warga_desa->nik }}" data-inputmask='"mask": "9999999999999999"' data-mask>
-                                @if ($errors->has('nik'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('nik') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Tempat & Tanggal Lahir -->
+                        <div class="form-group">
+                            <label for="tempat_tanggal_lahir" class="mb-3">Tempat & Tanggal Lahir</label>
+                            <input type="text" class="form-control rounded-lg @error('tempat_tanggal_lahir') is-invalid @enderror"
+                                id="tempat_tanggal_lahir" name="tempat_tanggal_lahir"
+                                value="{{ old('tempat_tanggal_lahir', $warga_desa->tempat_tanggal_lahir) }}"
+                                placeholder="Contoh: Bandung, 12 Maret 2002">
+                            @error('tempat_tanggal_lahir') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="name" class="mb-3">Nama</label>
-                                <input type="text" class="form-control rounded-lg @if ($errors->has('name')) is-invalid @endif" id="name" name="name" value="{{ $warga_desa->name }}">
-                                @if ($errors->has('name'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('name') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Tanggal Lahir (untuk password) -->
+                        <div class="form-group">
+                            <label for="tanggal_lahir">Tanggal Lahir (untuk password login)</label>
+                            <input type="date" class="form-control rounded-lg @error('tanggal_lahir') is-invalid @enderror"
+                                id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $warga_desa->tanggal_lahir) }}">
+                            @error('tanggal_lahir') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="email" class="mb-3">Email</label>
-                                <input type="email" class="form-control rounded-lg @if ($errors->has('email')) is-invalid @endif" id="email" name="email" value="{{ $warga_desa->email }}">
-                                @if ($errors->has('email'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('email') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Status Perkawinan -->
+                        <div class="form-group">
+                            <label for="status_perkawinan" class="mb-3">Status Perkawinan</label>
+                            <select class="form-control rounded-lg @error('status_perkawinan') is-invalid @enderror"
+                                id="status_perkawinan" name="status_perkawinan">
+                                <option value="" disabled {{ empty(old('status_perkawinan', $warga_desa->status_perkawinan)) ? 'selected' : '' }}>-- Pilih Status Perkawinan --</option>
+                                @foreach(['Belum Kawin','Kawin','Cerai Hidup','Cerai Mati'] as $status)
+                                    <option value="{{ $status }}" {{ old('status_perkawinan', $warga_desa->status_perkawinan) == $status ? 'selected' : '' }}>
+                                        {{ $status }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('status_perkawinan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="phone_number" class="mb-3">No. HP</label>
-                                <input type="text" class="form-control rounded-lg phone-number @if ($errors->has('phone_number')) is-invalid @endif" id="phone_number" name="phone_number" value="{{ $warga_desa->phone_number }}">
-                                @if ($errors->has('phone_number'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('phone_number') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Warga Negara -->
+                        <div class="form-group">
+                            <label for="warga_negara" class="mb-3">Warga Negara</label>
+                            <input type="text" class="form-control rounded-lg @error('warga_negara') is-invalid @enderror"
+                                id="warga_negara" name="warga_negara"
+                                value="{{ old('warga_negara', $warga_desa->warga_negara) }}"
+                                placeholder="Contoh: Indonesia">
+                            @error('warga_negara') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="alamat" class="mb-3">Alamat</label>
-                                <textarea class="form-control rounded-lg @if ($errors->has('alamat')) is-invalid @endif" id="alamat" name="alamat">{{ $warga_desa->alamat }}</textarea>
-                                @if ($errors->has('alamat'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('alamat') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Agama -->
+                        <div class="form-group">
+                            <label for="agama" class="mb-3">Agama</label>
+                            <select class="form-control rounded-lg @error('agama') is-invalid @enderror" name="agama" id="agama">
+                                <option value="" disabled {{ empty(old('agama', $warga_desa->agama)) ? 'selected' : '' }}>-- Pilih Agama --</option>
+                                @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'] as $agama)
+                                    <option value="{{ $agama }}" {{ old('agama', $warga_desa->agama) == $agama ? 'selected' : '' }}>{{ $agama }}</option>
+                                @endforeach
+                            </select>
+                            @error('agama') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="tanggal_lahir">Tanggal Lahir</label>
-                                <input type="date" class="form-control rounded-lg @if ($errors->has('tanggal_lahir')) is-invalid @endif" id="tanggal_lahir" name="tanggal_lahir" value="{{ $warga_desa->tanggal_lahir }}">
-                                @if ($errors->has('tanggal_lahir'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('tanggal_lahir') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Pekerjaan -->
+                        <div class="form-group">
+                            <label for="pekerjaan" class="mb-3">Pekerjaan</label>
+                            <input type="text" class="form-control rounded-lg @error('pekerjaan') is-invalid @enderror"
+                                name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan', $warga_desa->pekerjaan) }}">
+                            @error('pekerjaan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="form-group">
-                                <label for="jenis_kelamin">Jenis Kelamin</label>
-                                <select class="form-control select2 rounded-lg @if ($errors->has('jenis_kelamin')) is-invalid @endif" id="jenis_kelamin" name="jenis_kelamin">
-                                    <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
-                                    <option value="L" {{ $warga_desa->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                    <option value="P" {{ $warga_desa->jenis_kelamin == 'P' ? 'selected' : '' }}>Perempuan</option>
-                                </select>
-                                @if ($errors->has('jenis_kelamin'))
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('jenis_kelamin') }}
-                                    </div>
-                                @endif
-                            </div>
+                        <!-- Alamat -->
+                        <div class="form-group">
+                            <label for="alamat" class="mb-3">Alamat</label>
+                            <textarea class="form-control rounded-lg @error('alamat') is-invalid @enderror"
+                                id="alamat" name="alamat">{{ old('alamat', $warga_desa->alamat) }}</textarea>
+                            @error('alamat') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="d-flex w-100 justify-content-end mt-4">
-                                <button type="submit" class="btn btn-primary btn-green-pastel px-5 py-2">Edit</button>
-                            </div>
-                        </form>
+                        <div class="d-flex w-100 justify-content-end mt-5">
+                            <button type="submit" class="btn btn-primary btn-green-pastel px-5 py-2">Edit</button>
+                        </div>
 
-                    </div>
+                    </form>
                 </div>
             </div>
+
         </div>
-
     </div>
-
+</div>
 @endsection

@@ -49,8 +49,8 @@
         <h3 class="px-5 text-bold">Kontak</h3>
         <div class="w-50 d-flex flex-column justify-content-center align-items-center mx-auto text-md">
             <p class="text-center my-3">Untuk informasi lebih lanjut terkait pelayanan Desa Margalaksana <br> dapat menghubungi kontak dibawah ini :</p>
-            <p><i class="fa fa-phone-alt"></i> : (0473) - 2311390</p>
-            <p><i class="fa fa-envelope"></i> : desamargalaksana.co.id</p>
+            <p><i class="fa fa-phone-alt"></i> : 082319207271</p>
+            <p><i class="fa fa-envelope"></i> : margalaksanasukaraja@gmail.com</p>
         </div>
     </div>
 @endsection

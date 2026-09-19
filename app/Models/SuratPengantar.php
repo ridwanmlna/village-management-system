@@ -14,13 +14,15 @@ class SuratPengantar extends Model
         'jenis_berkas',
         'file_berkas',
         'orginal_name_berkas',
-        'status_pengajuan'
+        'status_pengajuan',
+        'alasan_penolakan'
     ];
 
-    const STATUS_WAITING = 1;
-    const STATUS_APPROVED = 2;
-    const STATUS_REJECTED = 3;
-    const STATUS_DONE = 4;
+    const STATUS_MENUNGGU = 1;
+    const STATUS_DITERIMA = 2;
+    const STATUS_DIPROSES = 3;
+    const STATUS_SELESAI = 4;
+    const STATUS_DITOLAK = 5;
 
     public function user()
     {
@@ -36,21 +38,32 @@ class SuratPengantar extends Model
     {
         $status = '';
 
-        switch ($this->status_pengajuan) {
-            case self::STATUS_WAITING:
-                $status = "<span class='badge badge-info'>Menunggu Verifikasi</span>";
-                break;
-            case self::STATUS_APPROVED:
-                $status = "<span class='badge badge-success'>Verifikasi Berhasil</span>";
-                break;
-            case self::STATUS_REJECTED:
-                $status = "<span class='badge badge-danger'>Verifikasi Gagal</span>";
-                break;
-            case self::STATUS_DONE:
-                $status = "<span class='badge badge-primary'>Selesai</span>";
-                break;
-        }
+    switch ($this->status_pengajuan) {
 
+        case self::STATUS_MENUNGGU:
+            $status = "<span class='badge badge-info'>Menunggu Verifikasi</span>";
+            break;
+
+        case self::STATUS_DITERIMA:
+            $status = "<span class='badge badge-primary'>Diterima</span>";
+            break;
+
+        case self::STATUS_DIPROSES:
+            $status = "<span class='badge badge-warning'>Diproses</span>";
+            break;
+
+        case self::STATUS_SELESAI:
+            $status = "<span class='badge badge-success'>Selesai</span>";
+            break;
+
+        case self::STATUS_DITOLAK:
+            $status = "<span class='badge badge-danger'>Ditolak</span>";
+            break;
+
+        default:
+            $status = "<span class='badge badge-secondary'>Tidak Diketahui</span>";
+            break;
+    }
         return $status;
     }
 }

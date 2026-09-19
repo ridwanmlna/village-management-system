@@ -23,11 +23,24 @@
                             <div class="align-self-center">
                                 <p>{{ $item->created_at }}</p>
                                 <h5 class="card-title">{{ $item->judul_notifikasi }}</h5>
-                                <p class="card-text">{{ $item->isi_notifikasi }}</p>
+                                <p class="card-text" style="white-space: pre-line;">
+    {{ $item->isi_notifikasi }}
+</p>
                             </div>
-                            <div class="align-self-center ml-auto">
-                                <a href="{{ $item->notifikasi_link }}">Detail</a>
-                            </div>
+                            <div class="align-self-center ml-auto d-flex align-items-center">
+
+    <form action="{{ route('notifikasi.destroy', $item->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit"
+            class="btn btn-sm btn-danger"
+            onclick="return confirm('Yakin ingin menghapus notifikasi ini?')">
+            Hapus
+        </button>
+    </form>
+
+</div>
                         </div>
                     </div>
                 @empty
